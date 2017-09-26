@@ -60,6 +60,11 @@ public:
 	}
 
 	// TODO 2: Create new virtual methods to Load and Save
+	virtual void Save() const
+	{
+
+	}
+
 
 public:
 

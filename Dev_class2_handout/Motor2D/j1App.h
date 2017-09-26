@@ -48,6 +48,11 @@ public:
 	// that can be called anytime, even if they 
 	// will one execute by the very end of the frame
 	// Load / Save
+	void NeedTSave() const;
+	void NeedTLoad();
+
+	void Save() const;
+	void Load();
 
 private:
 
@@ -92,6 +97,9 @@ private:
 
 	p2SString			title;
 	p2SString			organization;
+
+	mutable bool		Need2Save = false;
+	bool				Need2Load = false;
 
 };
 

@@ -152,7 +152,8 @@ void j1App::PrepareUpdate()
 void j1App::FinishUpdate()
 {
 	// TODO 1: This is a good place to call load / Save functions
-
+	if (Need2Save) Save();
+	if (Need2Load) Load();
 }
 
 // Call modules before each loop iteration
@@ -262,6 +263,24 @@ const char* j1App::GetOrganization() const
 {
 	return organization.GetString();
 }
+
+void j1App::NeedTSave() const
+{
+	Need2Save = true;
+};
+void j1App::NeedTLoad()
+{
+	Need2Load = true;
+};
+
+void j1App::Save() const
+{
+	
+};
+void j1App::Load()
+{
+
+};
 
 
 // TODO 3: Create a simulation of the xml file to read 
