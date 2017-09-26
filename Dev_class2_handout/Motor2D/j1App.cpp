@@ -152,8 +152,43 @@ void j1App::PrepareUpdate()
 void j1App::FinishUpdate()
 {
 	// TODO 1: This is a good place to call load / Save functions
-	if (Need2Save) Save();
-	if (Need2Load) Load();
+	if (Need2Load == true)
+	{
+		Load();
+
+		bool ret = true;
+		pugi::xml_parse_result result = fakesave.load_file("fakesave");
+		fakenode = fakesave.child("save");
+
+		p2List_item<j1Module*>* item;
+
+		for (item = modules.start; item != NULL && ret == true; item = item->next)
+		{
+			ret = item->data->Load(fakenode.child(item->data->name.GetString()));
+		}
+	}
+	
+	if (Need2Save == true)
+	{
+		Save();
+
+		bool ret = true;
+		pugi::xml_parse_result result = fakesave.load_file("fakesave");
+		fakenode = fakesave.child("save");
+
+		p2List_item<j1Module*>* item;
+
+		for (item = modules.start; item != NULL && ret == true; item = item->next)
+		{
+			if (fakenode.child(item->data->name.GetString()) == NULL)
+			{
+				fakenode.append_child(item->data->name.GetString());
+			}
+			ret = item->data->Save(fakenode.child(item->data->name.GetString()));
+		}
+		
+		fakesave.save_file("fakesave.xml");
+	}
 }
 
 // Call modules before each loop iteration
@@ -267,20 +302,31 @@ const char* j1App::GetOrganization() const
 void j1App::NeedTSave() const
 {
 	Need2Save = true;
-};
+}
+
 void j1App::NeedTLoad()
 {
 	Need2Load = true;
-};
+}
 
-void j1App::Save() const
+void j1App::Save()
 {
-	
-};
+	if (pugi::xml_parse_result result = fakesave.load_file("fakesave.xml"))
+	{
+		fakenode = fakesave.child("save");
+	}
+	else
+	{
+		fakenode = fakesave.append_child("save");
+	}
+
+	Need2Save = false;
+}
 void j1App::Load()
 {
-
+	Need2Load = false;
 };
+
 
 
 // TODO 3: Create a simulation of the xml file to read 

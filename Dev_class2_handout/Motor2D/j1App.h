@@ -51,7 +51,7 @@ public:
 	void NeedTSave() const;
 	void NeedTLoad();
 
-	void Save() const;
+	void Save();
 	void Load();
 
 private:
@@ -100,6 +100,9 @@ private:
 
 	mutable bool		Need2Save = false;
 	bool				Need2Load = false;
+
+	pugi::xml_document	fakesave;
+	pugi::xml_node		fakenode;
 
 };
 
